@@ -1,0 +1,5 @@
+# General
+target/
+
+# IntelliJ
+.idea/

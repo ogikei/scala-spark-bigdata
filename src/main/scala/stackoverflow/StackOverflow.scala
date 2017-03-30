@@ -193,6 +193,14 @@ class StackOverflow extends Serializable {
     val newMeans = means.clone() // you need to compute newMeans
 
     // TODO: Fill in the newMeans array
+    vectors.map(vector => (findClosest(vector, means), vector))
+           .groupByKey()
+           .mapValues(averageVectors)
+           .collect()
+           .foreach(pair => {
+             newMeans.update(pair._1, pair._2)
+           })
+
     val distance = euclideanDistance(means, newMeans)
 
     if (debug) {
@@ -295,7 +303,7 @@ class StackOverflow extends Serializable {
       val maxLangIndex = grouped.maxBy(_._2)._1
 
       val langLabel: String   = langs(maxLangIndex) // most common language in the cluster
-      val langPercent: Double = grouped(maxLangIndex) * 100.0 * vs.size // percent of the questions in the most common language
+      val langPercent: Double = grouped(maxLangIndex) * 100.0 / vs.size // percent of the questions in the most common language
       val clusterSize: Int    = vs.size
       val medianScore: Int    = {
         val middle = clusterSize / 2

@@ -11,6 +11,7 @@ object StyleChecker {
     private val messageHelper = new MessageHelper(ConfigFactory.load())
 
     var fileCount: Int = _
+
     override def message(m: Message[T]): Unit = m match {
       case StartWork() =>
       case EndWork() =>
@@ -57,11 +58,12 @@ object StyleChecker {
     val output = new ByteArrayOutputStream()
     val outputResult = new CustomTextOutput(new PrintStream(output)).output(messages)
 
-    val msg = s"""${output.toString}
-                 |Processed ${outputResult.files}  file(s)
-                 |Found ${outputResult.errors} errors
-                 |Found ${outputResult.warnings} warnings
-                 |""".stripMargin
+    val msg =
+      s"""${output.toString}
+         |Processed ${outputResult.files}  file(s)
+         |Found ${outputResult.errors} errors
+         |Found ${outputResult.warnings} warnings
+         |""".stripMargin
 
     (msg, score(outputResult))
   }

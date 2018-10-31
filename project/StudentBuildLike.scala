@@ -10,10 +10,11 @@ import scalaj.http._
 
 import scala.util.{Try, Success, Failure}
 
-case class MapMapString (val map: Map[String, Map[String, String]])
+case class MapMapString(val map: Map[String, Map[String, String]])
+
 /**
-  * Note: keep this class concrete (i.e., do not convert it to abstract class or trait).
-  */
+ * Note: keep this class concrete (i.e., do not convert it to abstract class or trait).
+ */
 class StudentBuildLike protected() extends CommonBuild {
 
   lazy val root = project.in(file(".")).settings(
@@ -28,8 +29,8 @@ class StudentBuildLike protected() extends CommonBuild {
   ).settings(packageSubmissionFiles: _*)
 
   /** **********************************************************
-    * SUBMITTING A SOLUTION TO COURSERA
-    */
+   * SUBMITTING A SOLUTION TO COURSERA
+   */
 
   val packageSubmission = TaskKey[File]("packageSubmission")
 
@@ -47,8 +48,8 @@ class StudentBuildLike protected() extends CommonBuild {
   }
 
   /** Check that the jar exists, isn't empty, isn't crazy big, and can be read
-    * If so, encode jar as base64 so we can send it to Coursera
-    */
+   * If so, encode jar as base64 so we can send it to Coursera
+   */
   def prepareJar(jar: File, s: TaskStreams): String = {
     val errPrefix = "Error submitting assignment jar: "
     val fileLength = jar.length()
@@ -60,8 +61,8 @@ class StudentBuildLike protected() extends CommonBuild {
       failSubmit()
     } else if (fileLength > maxSubmitFileSize) {
       s.log.error(errPrefix + "jar archive is too big. Allowed size: " +
-        maxSubmitFileSize + " bytes, found " + fileLength + " bytes.\n" +
-        jar.getAbsolutePath)
+          maxSubmitFileSize + " bytes, found " + fileLength + " bytes.\n" +
+          jar.getAbsolutePath)
       failSubmit()
     } else {
       val bytes = new Array[Byte](fileLength.toInt)
@@ -154,9 +155,9 @@ class StudentBuildLike protected() extends CommonBuild {
       )
       s.log.info("Connecting to Coursera...")
       val response = Try(http.postData(data)
-                         .headers(hs)
-                         .option(HttpOptions.connTimeout(10000)) // scalaj default timeout is only 100ms, changing that to 10s
-                         .asString) // kick off HTTP POST
+          .headers(hs)
+          .option(HttpOptions.connTimeout(10000)) // scalaj default timeout is only 100ms, changing that to 10s
+          .asString) // kick off HTTP POST
       response
     }
 
@@ -232,16 +233,16 @@ class StudentBuildLike protected() extends CommonBuild {
   }
 
   /**
-    * *****************
-    * DEALING WITH JARS
-    */
+   * *****************
+   * DEALING WITH JARS
+   */
   def encodeBase64(bytes: Array[Byte]): String =
     new String(Base64.encodeBase64(bytes))
 
 
   /** *****************************************************************
-    * RUNNING WEIGHTED SCALATEST & STYLE CHECKER ON DEVELOPMENT SOURCES
-    */
+   * RUNNING WEIGHTED SCALATEST & STYLE CHECKER ON DEVELOPMENT SOURCES
+   */
 
   val styleCheck = TaskKey[Unit]("styleCheck")
   val styleCheckSetting = styleCheck := {

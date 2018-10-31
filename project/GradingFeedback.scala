@@ -21,19 +21,19 @@ class GradingFeedback {
         |${feedbackDetails.mkString("\n")}""".stripMargin
 
   /**
-    * `failed` means that there was an unexpected error during grading. This includes
-    * - student's code does not compile
-    * - our tests don't compile (against the student's code)
-    * - crash while executing ScalaTest (not test failures, but problems trying to run the tests!)
-    * - crash while executing the style checker (again, not finding style problems!)
-    *
-    * When failed is `true`, later grading stages will not be executed: this is handled automatically
-    * by SBT, tasks depending on a failed one are not run.
-    *
-    * However, these dependent tasks still fail (i.e. mapR on them is invoked). The variable below
-    * allows us to know if something failed before. In this case, we don't add any more things to
-    * the log. (see `ProgFunBuild.handleFailure`)
-    */
+   * `failed` means that there was an unexpected error during grading. This includes
+   * - student's code does not compile
+   * - our tests don't compile (against the student's code)
+   * - crash while executing ScalaTest (not test failures, but problems trying to run the tests!)
+   * - crash while executing the style checker (again, not finding style problems!)
+   *
+   * When failed is `true`, later grading stages will not be executed: this is handled automatically
+   * by SBT, tasks depending on a failed one are not run.
+   *
+   * However, these dependent tasks still fail (i.e. mapR on them is invoked). The variable below
+   * allows us to know if something failed before. In this case, we don't add any more things to
+   * the log. (see `ProgFunBuild.handleFailure`)
+   */
   def isFailed = failed
 
   /* Methods to build up the feedback log */
@@ -200,8 +200,8 @@ class GradingFeedback {
 }
 
 /**
-  * Logger to capture compiler output, test output
-  */
+ * Logger to capture compiler output, test output
+ */
 
 object RecordingLogger extends Logger {
   private val buffer = ListBuffer[String]()

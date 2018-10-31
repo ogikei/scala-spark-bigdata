@@ -100,9 +100,9 @@ object ScalaTestRunner {
   private def computeSummary(outFilePath: String, classpathString: String, logError: String => Unit): String = {
     val summaryFilePath = outFilePath + ".summary"
     val summaryCmd = "java" ::
-      "-cp" :: classpathString ::
-      "ch.epfl.lamp.grading.GradingSummaryRunner" ::
-      outFilePath :: summaryFilePath :: Nil
+        "-cp" :: classpathString ::
+        "ch.epfl.lamp.grading.GradingSummaryRunner" ::
+        outFilePath :: summaryFilePath :: Nil
     var summaryProc: SysProc = null
     try {
       summaryProc = SysProc(summaryCmd).run()
@@ -126,8 +126,8 @@ object ScalaTestRunner {
   }
 
   def runScalaTest(classpath: Classpath, testClasses: File, outfile: File,
-                   resourceFiles: List[File], gradeOptions: Map[String, String],
-                   logError: String => Unit, instragentPath: String) = {
+      resourceFiles: List[File], gradeOptions: Map[String, String],
+      logError: String => Unit, instragentPath: String) = {
 
     // invoke scalatest in the separate process
     val classpathString = classpath map { case Attributed(file) => file.getAbsolutePath } mkString ":"
@@ -158,7 +158,7 @@ object ScalaTestRunner {
   }
 
   private def scalaTestCommand(testClasses: File, outfile: File, resourceFiles: List[File], gradeOptions: Map[String, String], classpathString: String,
-                               instragentPath: String): List[String] = {
+      instragentPath: String): List[String] = {
     val testRunPath = runPathString(testClasses)
     val resourceFilesString = resourceFiles.map(_.getAbsolutePath).mkString(":")
     // Deleting the file is helpful: it makes reading the file below crash in case ScalaTest doesn't
@@ -179,17 +179,17 @@ object ScalaTestRunner {
     // NOTICE: DON'T start test in parallel, it would break profiling. Check the
     // implementation of @InstrumentedSuite for more details.
     "java" ::
-      xmx :: xms ::
-      s"-javaagent:$instragentPath" ::
-      prop(Settings.scalaTestReportFileProperty, outfile.getAbsolutePath) ::
-      prop(Settings.scalaTestIndividualTestTimeoutProperty, timeoutPerTest) ::
-      prop(Settings.scalaTestReadableFilesProperty, resourceFilesString) ::
-      prop(Settings.scalaTestDefaultWeightProperty, Settings.scalaTestDefaultWeight.toString) ::
-      "-cp" :: classpathString ::
-      "org.scalatest.tools.Runner" ::
-      "-R" :: testRunPath ::
-      "-C" :: Settings.scalaTestReporter ::
-      Nil
+        xmx :: xms ::
+        s"-javaagent:$instragentPath" ::
+        prop(Settings.scalaTestReportFileProperty, outfile.getAbsolutePath) ::
+        prop(Settings.scalaTestIndividualTestTimeoutProperty, timeoutPerTest) ::
+        prop(Settings.scalaTestReadableFilesProperty, resourceFilesString) ::
+        prop(Settings.scalaTestDefaultWeightProperty, Settings.scalaTestDefaultWeight.toString) ::
+        "-cp" :: classpathString ::
+        "org.scalatest.tools.Runner" ::
+        "-R" :: testRunPath ::
+        "-C" :: Settings.scalaTestReporter ::
+        Nil
   }
 
   private def testEnv(options: Map[String, String]): String = {
@@ -198,11 +198,11 @@ object ScalaTestRunner {
     val timeoutPerTest = options.get("individualTimeout").map(_.toInt).getOrElse(Settings.individualTestTimeout)
 
     "======== TESTING ENVIRONMENT ========\n" +
-    s"Limits: memory: $memory,  total time: ${timeout}s,  per test case time: ${timeoutPerTest}s\n"
+        s"Limits: memory: $memory,  total time: ${timeout}s,  per test case time: ${timeoutPerTest}s\n"
   }
 
   def scalaTestGrade(gradingReporter: GradingFeedback, classpath: Classpath, testClasses: File, outfile: File,
-                     resourceFiles: List[File], gradeOptions: Map[String, String], instragentPath: String): Unit = {
+      resourceFiles: List[File], gradeOptions: Map[String, String], instragentPath: String): Unit = {
 
     val (score, maxScore, feedback, runLog) =
       runScalaTest(classpath, testClasses, outfile, resourceFiles, gradeOptions, gradingReporter.testExecutionFailed, instragentPath)
@@ -219,4 +219,3 @@ object ScalaTestRunner {
     }
   }
 }
-
